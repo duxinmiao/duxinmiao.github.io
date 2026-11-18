@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>杜鑫淼 | 具身智能 · 机器人操作与感知算法</title>
+<meta name="description" content="杜鑫淼的个人主页：北京大学智能学院博士研究生，研究具身智能中的机器人感知与操作，包括 6D 位姿估计、语言引导抓取、逆运动学与视觉闭环控制。">
+<meta property="og:title" content="杜鑫淼 | 具身智能 · 机器人操作与感知算法">
+<meta property="og:description" content="北京大学智能学院博士研究生，研究机器人感知与操作。">
+<meta property="og:type" content="profile">
+<meta property="og:image" content="photo.jpg">
+<style>
+html { color-scheme: light; }
+body { margin: 0; }
+img { max-width: 100%; }
+/* 版式：单栏 940px；顶部左文右像，其下是一条"从感知到执行"的链路图，再往下是带指标的工作列表和双栏经历 */
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --ink: #132238;
+  --muted: #586478;
+  --line: #d8dfe9;
+  --accent: #1c5bc9;
+  --accent-soft: #e5edfa;
+  --chip: #edf1f6;
+  --font-display: "Songti SC", "STSong", "Noto Serif CJK SC", "SimSun", serif;
+  --font-body: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-data: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1520; --surface: #141f2e; --ink: #e8eef7; --muted: #9ba9be;
+    --line: #25344a; --accent: #82b2ff; --accent-soft: #17273e; --chip: #1a2738;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1520; --surface: #141f2e; --ink: #e8eef7; --muted: #9ba9be;
+  --line: #25344a; --accent: #82b2ff; --accent-soft: #17273e; --chip: #1a2738;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.75;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+
+.wrap {
+  max-width: 940px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* 顶部导航 */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); letter-spacing: 0.04em; }
+.brand span { font-family: var(--font-data); font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: 0.18em; margin-left: 10px; }
+.nav { display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; }
+.nav a { color: var(--muted); }
+.nav a:hover { color: var(--accent); text-decoration: none; }
+
+main { display: flex; flex-direction: column; gap: 56px; padding-block: 44px 64px; }
+section { scroll-margin-top: 72px; }
+
+/* 首屏 */
+.hero { display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap; }
+.hero-text { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.eyebrow { font-family: var(--font-data); font-size: 12px; letter-spacing: 0.16em; color: var(--accent); text-transform: uppercase; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 6vw, 46px); line-height: 1.15; letter-spacing: 0.06em; }
+.role { font-size: 19px; font-weight: 700; }
+.affil { color: var(--muted); font-size: 15px; }
+.bio { max-width: 34em; }
+.contact-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 15px; }
+.contact-row .label { color: var(--muted); }
+.email { font-family: var(--font-data); font-size: 14px; user-select: all; overflow-wrap: anywhere; }
+.copy {
+  font: inherit; font-size: 13px; color: var(--accent); background: var(--accent-soft);
+  border: 1px solid transparent; border-radius: 6px; padding: 2px 10px; cursor: pointer;
+}
+.copy:hover { border-color: var(--accent); }
+.portrait { flex: 0 0 auto; width: min(240px, 60vw); }
+.portrait img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 14px; border: 1px solid var(--line); background: #ffffff; }
+
+/* 三项概况 */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); border-block: 1px solid var(--line); }
+.facts li { padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.facts li + li { border-left: 1px solid var(--line); }
+.facts .big { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.3; }
+.facts .big .num { font-size: 21px; font-weight: 700; }
+.facts .small { color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 24px; letter-spacing: 0.05em; text-wrap: balance; }
+.sec-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
+.sec-head p { color: var(--muted); font-size: 15px; max-width: 40em; }
+
+/* 链路图：四个环节是真实的先后顺序 */
+.chain { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; counter-reset: step; }
+.chain li { position: relative; padding: 16px 18px 16px 0; min-width: 0; }
+.chain li + li { padding-left: 22px; }
+.chain li::before {
+  counter-increment: step; content: "0" counter(step);
+  font-family: var(--font-data); font-size: 12px; color: var(--accent); letter-spacing: 0.1em;
+}
+.chain .stage { font-weight: 700; font-size: 17px; margin-top: 2px; }
+.chain .what { color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+.chain .ref { font-size: 13.5px; }
+.chain-rail { height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-soft)); border-radius: 2px; }
+.chain-note { margin-top: 14px; color: var(--muted); font-size: 14px; }
+
+/* 代表性工作 */
+.works { display: flex; flex-direction: column; }
+.work { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 8px 28px; padding-block: 24px; border-top: 1px solid var(--line); scroll-margin-top: 72px; }
+.work:last-child { border-bottom: 1px solid var(--line); }
+.work-meta { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; color: var(--muted); }
+.venue { font-weight: 700; color: var(--ink); font-size: 15px; }
+.work-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+h3 { font-size: 18px; font-weight: 700; line-height: 1.5; text-wrap: balance; }
+.en-title { font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.5; }
+.metrics { display: flex; flex-wrap: wrap; gap: 8px; }
+.metric { background: var(--chip); border-radius: 8px; padding: 6px 12px; display: flex; flex-direction: column; min-width: 0; }
+.metric b { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 700; color: var(--accent); }
+.metric span { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.links { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; }
+.minor { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 22px; }
+.minor li { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.minor .t { font-weight: 700; }
+.minor .d { font-size: 14.5px; }
+.minor .v { font-size: 13px; color: var(--muted); }
+
+/* 经历 */
+.path { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px 40px; }
+.path h3 { font-size: 15px; color: var(--muted); font-weight: 500; letter-spacing: 0.1em; margin-bottom: 12px; }
+.tl { display: flex; flex-direction: column; gap: 18px; border-left: 1px solid var(--line); padding-left: 18px; }
+.tl li { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tl .when { font-family: var(--font-data); font-size: 12.5px; color: var(--accent); letter-spacing: 0.04em; }
+.tl .who { font-weight: 700; }
+.tl .desc { font-size: 14.5px; color: var(--muted); }
+
+/* 技能 */
+.skills { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px 24px; }
+.skills dt { font-weight: 700; }
+.skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { background: var(--chip); border-radius: 6px; padding: 1px 10px; font-size: 14px; }
+
+.service { display: flex; flex-direction: column; gap: 8px; }
+.service li { padding-left: 14px; border-left: 2px solid var(--accent-soft); }
+
+.contact { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+
+footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+footer .wrap { padding-block: 20px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 720px) {
+  .chain { grid-template-columns: 1fr; }
+  .chain li, .chain li + li { padding: 12px 0 12px 18px; border-left: 1px solid var(--accent); }
+  .chain-rail { display: none; }
+  .work { grid-template-columns: 1fr; }
+  .facts li + li { border-left: 0; border-top: 1px solid var(--line); }
+  .skills { grid-template-columns: 1fr; gap: 4px 0; }
+  .skills dd { margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#about">杜鑫淼<span>XINMIAO DU</span></a>
+    <nav class="nav" aria-label="页面导航">
+      <a href="#about">关于</a>
+      <a href="#research">研究</a>
+      <a href="#work">代表性工作</a>
+      <a href="#path">经历</a>
+      <a href="#skills">技能</a>
+      <a href="#contact">联系</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" id="about">
+    <div class="hero-text">
+      <p class="eyebrow">Embodied AI · Robot Manipulation</p>
+      <h1>杜鑫淼</h1>
+      <p class="role">具身智能｜机器人操作与感知算法</p>
+      <p class="affil">北京大学智能学院 · 计算机科学与技术博士研究生（2027 年 1 月毕业）· 导师：吴玺宏教授</p>
+      <p class="bio">我研究机械臂怎样看准、算准、放准：从单张 RGB 图像估计物体的 6D 位姿，按语言指令抓取物体，用神经网络求解逆运动学，再用视觉反馈把物体放到位。这些方法在 UR5 和 PiPER 真机上做过验证。读博前后有 4 年以上企业算法研发经历（含实习），带过 3–5 人的机械臂算法团队。</p>
+      <div class="contact-row">
+        <span class="label">邮箱</span>
+        <a class="email" id="email-text" href="mailto:duxm@stu.pku.edu.cn">duxm@stu.pku.edu.cn</a>
+        <button class="copy" id="copy-email" type="button" data-target="email-text">复制</button>
+        <span class="label">GitHub</span>
+        <a class="email" href="https://github.com/robotics-xbrain" target="_blank" rel="noopener">robotics-xbrain</a>
+      </div>
+    </div>
+    <figure class="portrait">
+      <img src="photo.jpg" alt="杜鑫淼的照片" width="560" height="560">
+    </figure>
+  </section>
+
+  <ul class="facts" aria-label="概况">
+    <li>
+      <span class="big"><span class="num">8</span> 篇论文</span>
+      <span class="small">其中第一作者 7 篇<br>一区 TOP 期刊、IROS、EMNLP 主会</span>
+    </li>
+    <li>
+      <span class="big"><span class="num">UR3 · UR5 · PiPER</span></span>
+      <span class="small">多款机械臂的算法开发与调试经验<br>从仿真训练到真机部署</span>
+    </li>
+    <li>
+      <span class="big"><span class="num">4</span> 年以上企业研发</span>
+      <span class="small">企业算法研发经历（含实习）<br>带过 3–5 人算法团队</span>
+    </li>
+  </ul>
+
+  <section id="research">
+    <div class="sec-head">
+      <h2>研究：从感知到执行</h2>
+      <p>我的几项工作正好连成机械臂完成一次操作的四个环节，每个环节对应一项成果。</p>
+    </div>
+    <div class="chain-rail" aria-hidden="true"></div>
+    <ol class="chain">
+      <li>
+        <p class="stage">看清物体</p>
+        <p class="what">单张 RGB 图像估计 6D 位姿</p>
+        <p class="ref"><a href="#w-rgpose">RGPose</a></p>
+      </li>
+      <li>
+        <p class="stage">听懂并抓取</p>
+        <p class="what">2–3 张图像重建，按语言指令抓取</p>
+        <p class="ref"><a href="#w-grasp">MASt3RGrasper</a></p>
+      </li>
+      <li>
+        <p class="stage">算出关节角</p>
+        <p class="what">两阶段神经网络逆运动学</p>
+        <p class="ref"><a href="#w-ik">RHI-LR-IK</a></p>
+      </li>
+      <li>
+        <p class="stage">放到位</p>
+        <p class="what">相对位姿视觉反馈的闭环修正</p>
+        <p class="ref"><a href="#w-piper">PiPER 闭环堆叠</a></p>
+      </li>
+    </ol>
+    <p class="chain-note">另有策略学习方向的工作（行为克隆、强化学习、扩散模型轨迹生成），以及一项关于语言指令换说法后模型是否仍然可靠的研究。</p>
+  </section>
+
+  <section id="work">
+    <div class="sec-head">
+      <h2>代表性工作</h2>
+    </div>
+    <div class="works">
+
+      <article class="work" id="w-grasp">
+        <div class="work-meta">
+          <span class="venue">IROS 2026</span>
+          <span>机器人领域顶会</span>
+          <span>第一作者</span>
+        </div>
+        <div class="work-body">
+          <h3>MASt3RGrasper：用 2–3 张 RGB 图像完成语言引导抓取</h3>
+          <p class="en-title">MASt3RGrasper: A Real-Time Language-Guided Robotic Grasping Approach with Minimal RGB Images</p>
+          <p>按语言指令抓取物体的系统，通常要么依赖深度相机，要么需要几十个视角加全局优化。这项工作只拍 2–3 张 RGB 图像，用 MASt3R 的稠密对应逐帧融合点云，并以机械臂正运动学算出的相机位姿作约束，省去全局优化，同时恢复真实尺度；再由微调的 CLIP 选定目标、SAM2 跨视角跟踪，最后交给 AnyGrasp 生成六自由度抓取位姿。</p>
+          <div class="metrics">
+            <div class="metric"><b>90.4%</b><span>见过的物体抓取成功率</span></div>
+            <div class="metric"><b>84.2%</b><span>未见过的物体抓取成功率</span></div>
+            <div class="metric"><b>≈ 2.0 s</b><span>从输入到给出抓取位姿</span></div>
+            <div class="metric"><b>156 次</b><span>UR5 真机抓取，37 种物品</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work" id="w-piper">
+        <div class="work-meta">
+          <span class="venue">博士学位论文工作</span>
+          <span>MuJoCo 仿真到真机</span>
+        </div>
+        <div class="work-body">
+          <h3>PiPER 真机视觉闭环堆叠</h3>
+          <p>低成本机械臂按运动学模型运动到位后仍有偏差，连续堆叠多层积木时容易失败。我提出基于相对位姿视觉反馈的闭环放置对齐方法：固定单目相机估计积木之间的相对位姿，网络据此输出关节修正量，并在运行过程中在线更新。训练图像由渲染生成，不依赖人工标注；先在 MuJoCo 中训练验证，再部署到 PiPER 真机，实现六层连续抓取与堆叠。</p>
+          <div class="metrics">
+            <div class="metric"><b>27 / 30</b><span>六层堆叠任务成功次数</span></div>
+            <div class="metric"><b>19 / 30</b><span>对照：模型固定不更新</span></div>
+            <div class="metric"><b>14 / 30</b><span>对照：开环放置</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="work" id="w-rgpose">
+        <div class="work-meta">
+          <span class="venue">Pattern Recognition 2027</span>
+          <span>中科院一区 TOP / CCF-B</span>
+          <span>第一作者兼通讯作者</span>
+        </div>
+        <div class="work-body">
+          <h3>RGPose：重渲染引导的单目 6D 位姿估计</h3>
+          <p class="en-title">RGPose: Rendering-guided multimodal consistency learning for monocular 6D object pose estimation</p>
+          <p>常规训练只约束“这张图对应这个位姿”，不约束物体移动后预测应如何变化，遮挡严重时精度明显下降。RGPose 对当前预测的位姿施加一个已知的刚体变换，用 CAD 模型重新渲染出配对图像，要求网络在位姿、特征和轮廓三个层面给出一致的预测。渲染只在训练时使用，推理仍是单张 RGB 图像、一次前向计算。</p>
+          <div class="metrics">
+            <div class="metric"><b>64.6% → 72.7%</b><span>遮挡数据集 LM-O，ADD(-S)</span></div>
+            <div class="metric"><b>68.5%</b><span>新环境只用 10% 标注</span></div>
+            <div class="metric"><b>31 ms</b><span>单帧推理，与基线相同</span></div>
+          </div>
+          <p class="links">
+            <a href="https://doi.org/10.1016/j.patcog.2026.114666" target="_blank" rel="noopener">论文</a>
+            <a href="https://github.com/robotics-xbrain/BlockManip" target="_blank" rel="noopener">BlockManip 数据集</a>
+            <a href="https://doi.org/10.5281/zenodo.20389640" target="_blank" rel="noopener">Zenodo 存档</a>
+          </p>
+        </div>
+      </article>
+
+      <article class="work" id="w-ik">
+        <div class="work-meta">
+          <span class="venue">IROS 2026</span>
+          <span>机器人领域顶会</span>
+          <span>第二作者</span>
+        </div>
+        <div class="work-body">
+          <h3>RHI-LR-IK：两阶段神经网络逆运动学求解器</h3>
+          <p class="en-title">RHI-LR-IK: Fast High-Precision Two-Stage Neural Inverse Kinematics Solver</p>
+          <p>数值迭代法依赖初值，在奇异位形附近容易不收敛；已有的学习方法速度快但精度不足。这项工作第一阶段按运动链顺序逐个关节预测，给出粗解；第二阶段根据末端位姿误差做局部修正。部署时只微调修正网络的最后几层，并用经验回放保持全局精度。</p>
+          <div class="metrics">
+            <div class="metric"><b>0.44–0.63 cm</b><span>位置误差，全工作空间</span></div>
+            <div class="metric"><b>0.62–0.72°</b><span>姿态误差</span></div>
+            <div class="metric"><b>≈ 4.5 ms</b><span>单次求解，对比方法中最快</span></div>
+            <div class="metric"><b>3 种机械臂</b><span>UR3、PiPER、Franka</span></div>
+          </div>
+          <p class="links">
+            <a href="https://github.com/jzy-doc/IKsolver-RHI-LR-IK" target="_blank" rel="noopener">代码</a>
+          </p>
+        </div>
+      </article>
+
+      <article class="work" id="w-cliff">
+        <div class="work-meta">
+          <span class="venue">EMNLP 2026 主会</span>
+          <span>NLP 顶会 / CCF-B</span>
+          <span>第一作者</span>
+        </div>
+        <div class="work-body">
+          <h3>Lexical Cliff：指令换一种说法，视觉—语言模型就可能失效</h3>
+          <p class="en-title">When Paraphrases Break Binding: A Lexical Cliff in Small Heads over Frozen CLIP Text Embeddings</p>
+          <p>在冻结的 CLIP 文本编码器上接小网络来理解指令是常见做法，但常规测试沿用训练时的说法。我构建了测试用词与训练用词不重叠的评测集 CF-PrefBench v4，发现即使新说法和训练说法的文本相似度很高，准确率仍会骤降；替换实验表明问题出在文本编码器，而不是视觉端。</p>
+          <div class="metrics">
+            <div class="metric"><b>0.158 → 0.949</b><span>把文本嵌入换回训练说法后</span></div>
+            <div class="metric"><b>7,749 组</b><span>评测视频对，7 个属性维度</span></div>
+          </div>
+          <p class="links">
+            <a href="https://github.com/robotics-xbrain/cf-prefbench-v4" target="_blank" rel="noopener">CF-PrefBench v4 评测集</a>
+          </p>
+        </div>
+      </article>
+
+    </div>
+
+    <ul class="minor" aria-label="策略学习相关研究">
+      <li>
+        <span class="t">强化学习序列操作</span>
+        <span class="d">行为克隆初始化、SAC 训练，加一层鲁棒执行层，在 MuJoCo 中完成抓取与堆叠任务。</span>
+        <span class="v">第一作者 · IEEE ICICR 2026</span>
+      </li>
+      <li>
+        <span class="t">TrajDiff：扩散模型轨迹生成</span>
+        <span class="d">以三维 ESDF 表示场景障碍，作为扩散模型的条件，直接生成机械臂轨迹。</span>
+        <span class="v">第一作者 · ICIC 2026 Oral</span>
+      </li>
+    </ul>
+  </section>
+
+  <section id="path">
+    <div class="sec-head">
+      <h2>经历</h2>
+    </div>
+    <div class="path">
+      <div>
+        <h3>教育</h3>
+        <ol class="tl">
+          <li>
+            <span class="when">2020.09 — 2027.01</span>
+            <span class="who">北京大学 · 博士</span>
+            <span class="desc">计算机科学与技术（智能科学与技术），智能学院。研究方向：单目视觉引导的机械臂操作。</span>
+          </li>
+          <li>
+            <span class="when">2015.09 — 2018.06</span>
+            <span class="who">吉林大学 · 硕士</span>
+            <span class="desc">运筹学与控制论，数学学院</span>
+          </li>
+          <li>
+            <span class="when">2011.09 — 2015.06</span>
+            <span class="who">吉林大学 · 学士</span>
+            <span class="desc">统计学，数学学院</span>
+          </li>
+        </ol>
+      </div>
+      <div>
+        <h3>工作</h3>
+        <ol class="tl">
+          <li>
+            <span class="when">2022.06 — 2024.09</span>
+            <span class="who">南京未来脑科技有限公司 · 机械臂算法部经理（实习）</span>
+            <span class="desc">带领 3–5 人算法团队，负责机械臂视觉感知、运动规划、逆运动学与视觉伺服算法的研发，完成算法与机器人本体的系统集成和原型机验证。</span>
+          </li>
+          <li>
+            <span class="when">2019.01 — 2020.08</span>
+            <span class="who">北京灵伴即时智能科技有限公司 · 视觉算法工程师</span>
+            <span class="desc">目标检测与识别、OCR、图像处理及深度学习模型研发。</span>
+          </li>
+          <li>
+            <span class="when">2016.09 — 2017.09</span>
+            <span class="who">北京灵伴即时智能科技有限公司 · 视觉算法实习生</span>
+            <span class="desc">计算机视觉算法研究与工程实践。</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head">
+      <h2>技能</h2>
+    </div>
+    <dl class="skills">
+      <dt>感知与抓取</dt>
+      <dd><span class="tag">6D 位姿估计</span><span class="tag">少视角三维重建（MASt3R）</span><span class="tag">开放词汇定位与分割（CLIP、SAM2）</span><span class="tag">六自由度抓取（AnyGrasp）</span></dd>
+      <dt>运动与控制</dt>
+      <dd><span class="tag">正/逆运动学</span><span class="tag">运动规划（MoveIt）</span><span class="tag">视觉伺服</span><span class="tag">相机与手眼标定</span></dd>
+      <dt>策略学习</dt>
+      <dd><span class="tag">行为克隆</span><span class="tag">强化学习（SAC）</span><span class="tag">扩散模型轨迹生成</span><span class="tag">Sim-to-Real</span></dd>
+      <dt>仿真与工程</dt>
+      <dd><span class="tag">MuJoCo</span><span class="tag">PyBullet</span><span class="tag">Isaac Sim / Isaac Lab</span><span class="tag">ROS / ROS 2</span><span class="tag">Python</span><span class="tag">C++</span><span class="tag">PyTorch</span><span class="tag">TensorRT</span></dd>
+    </dl>
+  </section>
+
+  <section id="service">
+    <div class="sec-head">
+      <h2>学术服务与项目</h2>
+    </div>
+    <ul class="service">
+      <li>IEEE/RSJ IROS（2025、2026）、IEEE ICRA（2025）、AAAI（2026）国际会议审稿人</li>
+      <li>国家重点研发计划（2023YFC3304800）课题三参研人员</li>
+      <li>参与指导 10 名以上学生开展计算机视觉方向的科研训练</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <h2>联系</h2>
+      <p>我在找具身智能方向的算法岗位，2027 年 1 月毕业后可入职。欢迎邮件联系。</p>
+      <div class="contact-row">
+        <span class="label">邮箱</span>
+        <a class="email" id="email-text-2" href="mailto:duxm@stu.pku.edu.cn">duxm@stu.pku.edu.cn</a>
+        <button class="copy" id="copy-email-2" type="button" data-target="email-text-2">复制</button>
+        <span class="label">GitHub</span>
+        <a class="email" href="https://github.com/robotics-xbrain" target="_blank" rel="noopener">robotics-xbrain</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 杜鑫淼</span>
+    <span>最后更新：2026 年 11 月</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  function selectText(el) {
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var el = document.getElementById(btn.dataset.target);
+      var text = el.textContent.trim();
+      var done = function () {
+        btn.textContent = '已复制';
+        setTimeout(function () { btn.textContent = '复制'; }, 1600);
+      };
+      var fallback = function () {
+        selectText(el);
+        btn.textContent = '已选中，请按 Ctrl/⌘+C';
+        setTimeout(function () { btn.textContent = '复制'; }, 2600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(fallback);
+      } else {
+        fallback();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
