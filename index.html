@@ -1,457 +1,637 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>杜鑫淼 | 具身智能 · 机器人操作与感知算法</title>
-<meta name="description" content="杜鑫淼的个人主页：北京大学智能学院博士研究生，研究具身智能中的机器人感知与操作，包括 6D 位姿估计、语言引导抓取、逆运动学与视觉闭环控制。">
-<meta property="og:title" content="杜鑫淼 | 具身智能 · 机器人操作与感知算法">
-<meta property="og:description" content="北京大学智能学院博士研究生，研究机器人感知与操作。">
-<meta property="og:type" content="profile">
-<meta property="og:image" content="photo.jpg">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23132238'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23ffffff' font-family='serif'%3E杜%3C/text%3E%3C/svg%3E">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xinmiao Du — Embodied AI &amp; Robotic Manipulation</title>
+<meta name="description" content="Homepage of Xinmiao Du, Ph.D. candidate at Peking University working on embodied AI, robot perception and manipulation.">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.className += ' js';</script>
 <style>
-/* 版式：单栏 1040px。首屏左文右像；论文与项目采用"左图右文"的学术主页写法；教育与工作并排成两列时间线 */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
 :root {
-  --bg: #f6f8fb;
-  --surface: #ffffff;
-  --ink: #132238;
-  --muted: #566277;
-  --line: #d9e0ea;
-  --accent: #1c5bc9;
-  --accent-soft: #e6eefb;
-  --chip: #eef2f7;
-  --thumb-bg: #ffffff;       /* 论文配图是白底，两种主题下都放在白色衬底上 */
-  --fig-ink: #132238;
-  --fig-accent: #1c5bc9;
-  --fig-muted: #a3aebf;
-  --font-display: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif;
-  --font-body: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", system-ui, sans-serif;
-  --font-data: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0d1520; --surface: #141f2e; --ink: #e8eef7; --muted: #9ba9be;
-    --line: #26354b; --accent: #82b2ff; --accent-soft: #17273e; --chip: #1a2738;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0d1520; --surface: #141f2e; --ink: #e8eef7; --muted: #9ba9be;
-  --line: #26354b; --accent: #82b2ff; --accent-soft: #17273e; --chip: #1a2738;
-  color-scheme: dark;
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --muted: #666666;
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --line: #e5e7eb;
+  --soft: #f9fafb;
+  --tile: #eff4ff;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial,
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --maxw: 800px;
+  --navh: 64px;
 }
 
-* { box-sizing: border-box; }
-html { color-scheme: light; scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--navh); color-scheme: light; }
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--font-body);
+  font-family: var(--sans);
   font-size: 16px;
-  line-height: 1.75;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-wrap: break-word;
 }
-img { max-width: 100%; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
-ul, ol { padding: 0; list-style: none; }
-.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+h1, h2, h3 { font-weight: 600; line-height: 1.3; }
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.75rem; margin-bottom: 48px; display: flex; align-items: center; gap: 12px; }
+h2 svg { color: var(--accent); flex-shrink: 0; }
+h3 { font-size: 1.25rem; }
+p { color: var(--muted); }
+a { color: var(--accent); text-decoration: none; transition: color .2s ease; }
+a:hover { color: var(--accent-strong); }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
-.wrap {
-  max-width: 1040px;
-  margin-inline: auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+section { padding: 40px 0; }
+
+/* 滚动时淡入（仅在脚本可用时启用） */
+.js .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+.js .reveal.shown { opacity: 1; transform: none; }
+
+/* 导航 */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--navh); z-index: 100;
+  background: rgba(255, 255, 255, .9);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  transition: box-shadow .3s ease;
+}
+.nav.scrolled { box-shadow: 0 1px 0 var(--line); }
+.nav-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-name { font-weight: 600; font-size: 1.125rem; color: var(--text); }
+.nav-name:hover { color: var(--text); }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a { font-size: .875rem; color: var(--muted); }
+.nav-links a:hover { color: var(--text); }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.lang {
+  font-size: .75rem; font-weight: 600; padding: 4px 12px; min-width: 44px;
+  border: 1px solid var(--line); border-radius: 4px; background: transparent;
+  color: var(--muted); cursor: pointer; transition: all .2s ease;
+}
+.lang:hover { border-color: var(--text); color: var(--text); }
+.burger {
+  display: none; width: 28px; height: 28px; padding: 4px; background: none; border: 0; cursor: pointer;
+  flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+}
+.burger span { display: block; width: 20px; height: 2px; border-radius: 1px; background: var(--text); transition: transform .3s ease, opacity .3s ease; }
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* 头部 */
+.hero { padding-top: calc(var(--navh) + 80px); padding-bottom: 80px; }
+.hero-grid { display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+.hero-text { flex: 1; min-width: 0; }
+.hero-text h1 { margin-bottom: 8px; }
+.tagline { font-size: 1.125rem; margin-bottom: 24px; }
+.hero-links { display: flex; gap: 16px; margin-bottom: 32px; }
+.hero-links a { color: var(--muted); display: inline-flex; }
+.hero-links a:hover { color: var(--accent); }
+.btn {
+  display: inline-block; padding: 10px 24px; font-size: .875rem; font-weight: 500;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 6px; transition: all .2s ease;
+}
+.btn:hover { background: var(--accent); color: #fff; }
+.hero-photo { flex-shrink: 0; }
+.hero-photo img { display: block; width: 200px; height: 200px; border-radius: 50%; object-fit: cover; object-position: 50% 28%; }
+
+/* 简介 */
+.about { max-width: 640px; }
+.about p { font-size: 1.0625rem; line-height: 1.8; text-align: justify; }
+
+/* 时间线 */
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before { content: ""; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 1px; background: var(--line); }
+.tl-item { position: relative; padding-bottom: 40px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before { content: ""; position: absolute; left: -24px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.tl-date { font-size: .8125rem; color: var(--muted); margin-bottom: 4px; }
+.tl-head {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 8px; cursor: pointer;
+  -webkit-user-select: none; user-select: none;
+}
+.tl-logo {
+  width: 48px; height: 48px; flex-shrink: 0; border-radius: 10px; background: var(--tile); color: var(--accent);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.tl-logo img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+.tl-title { flex: 1; min-width: 0; }
+.tl-title h3 { margin-bottom: 2px; }
+.tl-org { display: block; font-weight: 500; color: var(--text); }
+.chev { margin-left: auto; flex-shrink: 0; color: var(--muted); transition: transform .3s ease; }
+.tl-item.open .chev { transform: rotate(180deg); }
+.js .tl-details {
+  display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden;
+  transition: grid-template-rows .3s ease, opacity .3s ease, visibility 0s linear .3s;
+}
+.js .tl-item.open .tl-details { grid-template-rows: 1fr; opacity: 1; visibility: visible; transition-delay: 0s; }
+.tl-inner { min-height: 0; overflow: hidden; }
+.tl-inner > p { font-size: .9375rem; line-height: 1.6; margin-top: 8px; }
+.tl-inner > p.tl-cat { font-size: .875rem; font-weight: 600; color: var(--text); margin: 12px 0 4px; }
+.tl-list {
+  margin-top: 8px; padding-left: 1.25em; list-style: disc; color: var(--muted);
+  font-size: .9375rem; line-height: 1.7; text-align: justify;
+}
+.tl-cat + .tl-list { margin-top: 0; }
+.tl-list li + li { margin-top: 4px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-bottom: 2px; }
+.tag {
+  font-family: var(--mono); font-size: .75rem; padding: 2px 8px; border-radius: 4px;
+  color: var(--muted); border: 1px solid var(--line);
 }
 
-/* 顶部导航 */
-.topbar { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
-.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
-.brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); letter-spacing: 0.04em; }
-.brand span { font-family: var(--font-data); font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: 0.18em; margin-left: 10px; }
-.brand:hover { text-decoration: none; }
-.nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14.5px; }
-.nav a { color: var(--muted); }
-.nav a:hover { color: var(--accent); text-decoration: none; }
-
-main { display: flex; flex-direction: column; gap: 60px; padding-block: 48px 72px; }
-section { scroll-margin-top: 70px; }
-
-/* 首屏 */
-.hero { display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap; }
-.hero-text { flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
-.eyebrow { font-family: var(--font-data); font-size: 12px; letter-spacing: 0.16em; color: var(--accent); text-transform: uppercase; }
-h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 6vw, 46px); line-height: 1.15; letter-spacing: 0.06em; }
-h1 small { font-family: var(--font-body); font-size: 17px; font-weight: 400; color: var(--muted); letter-spacing: 0.02em; margin-left: 12px; }
-.role { font-size: 19px; font-weight: 700; }
-.affil { color: var(--muted); font-size: 15px; }
-.bio { max-width: 36em; }
-.link-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
-.pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  font: inherit; font-size: 14px; line-height: 1.4; color: var(--ink);
-  background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px;
+/* 论文 */
+.pubs { list-style: none; }
+.pub { padding: 24px 0; border-bottom: 1px solid var(--line); }
+.pub:first-child { padding-top: 0; }
+.pub.last { border-bottom: 0; }
+.pub.feat { display: flex; gap: 24px; align-items: flex-start; }
+.pub-fig { flex-shrink: 0; width: 280px; display: block; cursor: zoom-in; }
+.pub-fig img { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); background: #fff; }
+.pub-info { flex: 1; min-width: 0; }
+.pub-title { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.pub-authors { font-size: .9375rem; margin-bottom: 2px; }
+.pub-authors strong { color: var(--accent); font-weight: 600; }
+.pub-venue { font-size: .875rem; font-style: italic; margin-bottom: 8px; }
+.pub.more .pub-venue { margin-bottom: 0; }
+.badge {
+  display: inline-block; font-size: .75rem; font-weight: 600; font-style: normal; white-space: nowrap;
+  padding: 1px 8px; margin-left: 6px; border-radius: 4px; background: var(--accent); color: #fff; vertical-align: middle;
 }
-a.pill:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
-.pill .k { color: var(--muted); font-size: 13px; }
-.pill .v { font-family: var(--font-data); font-size: 13.5px; user-select: all; overflow-wrap: anywhere; }
-.copy {
-  font: inherit; font-size: 12.5px; color: var(--accent); background: var(--accent-soft);
-  border: 1px solid transparent; border-radius: 999px; padding: 1px 10px; cursor: pointer;
+.pub-links { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.pub-links a {
+  font-size: .8125rem; font-weight: 500; padding: 2px 8px; border: 1px solid var(--line); border-radius: 4px;
+  color: var(--muted); transition: all .2s ease;
 }
-.copy:hover { border-color: var(--accent); }
-.portrait { flex: 0 0 auto; width: min(250px, 62vw); }
-.portrait img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); background: #ffffff; }
-
-/* 三项概况 */
-.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); border-block: 1px solid var(--line); }
-.facts li { padding: 18px 22px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.facts li + li { border-left: 1px solid var(--line); }
-.facts .big { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.3; }
-.facts .big .num { font-size: 21px; font-weight: 700; }
-.facts .small { color: var(--muted); font-size: 13.5px; line-height: 1.6; }
-
-h2 { font-family: var(--font-display); font-weight: 700; font-size: 25px; letter-spacing: 0.05em; text-wrap: balance; }
-.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 20px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 2px solid var(--ink); margin-bottom: 4px; }
-.sec-head p { color: var(--muted); font-size: 14.5px; }
-
-/* 研究链路：四个环节是一次操作中真实的先后顺序 */
-.chain { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); counter-reset: step; margin-top: 18px; }
-.chain li { padding: 14px 18px 4px 0; min-width: 0; border-top: 3px solid var(--accent-soft); }
-.chain li:first-child { border-top-color: var(--accent); }
-.chain li + li { padding-left: 18px; }
-.chain li::before { counter-increment: step; content: "0" counter(step); font-family: var(--font-data); font-size: 12px; color: var(--accent); letter-spacing: 0.1em; }
-.chain .stage { font-weight: 700; font-size: 17px; margin-top: 2px; }
-.chain .what { color: var(--muted); font-size: 13.5px; line-height: 1.6; }
-.chain .ref { font-size: 13.5px; }
-
-/* 论文与项目：左图右文 */
-.pubs { display: flex; flex-direction: column; }
-.pub { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 12px 30px; padding-block: 26px; border-bottom: 1px solid var(--line); scroll-margin-top: 70px; }
-.thumb { display: block; align-self: start; background: var(--thumb-bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
-.thumb img, .thumb svg { display: block; width: 100%; height: auto; }
-a.thumb:hover { border-color: var(--accent); }
-.pub-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.venue { font-weight: 700; font-size: 14px; color: var(--surface); background: var(--ink); border-radius: 4px; padding: 0 9px; }
-.badge { font-size: 13px; color: var(--muted); background: var(--chip); border-radius: 4px; padding: 0 8px; }
-.badge.role { color: var(--accent); background: var(--accent-soft); }
-h3 { font-size: 18.5px; font-weight: 700; line-height: 1.45; text-wrap: balance; }
-.en-title { font-size: 14px; color: var(--muted); font-style: italic; line-height: 1.5; }
-.authors { font-size: 14.5px; }
-.authors b { font-weight: 700; }
-.desc { font-size: 15px; }
-.metrics { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13.5px; color: var(--muted); }
-.metrics b { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-size: 14.5px; font-weight: 700; color: var(--accent); margin-right: 5px; }
-.links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
-.btn { font-size: 13px; line-height: 1.5; color: var(--accent); border: 1px solid var(--accent); border-radius: 5px; padding: 1px 11px; }
-.btn:hover { background: var(--accent); color: var(--surface); text-decoration: none; }
-.pub-note { color: var(--muted); font-size: 13px; margin-top: 12px; }
-.more h4 { font-size: 15px; color: var(--muted); font-weight: 500; letter-spacing: 0.1em; margin: 26px 0 10px; }
-.more li { padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: 15px; display: flex; flex-direction: column; gap: 2px; }
-.more .v { font-size: 13.5px; color: var(--muted); }
-
-/* 条形小图（PiPER 条目的配图） */
-.chart text { font-family: var(--font-body); fill: var(--fig-ink); }
-.chart .cap { font-size: 12.5px; fill: var(--fig-ink); font-weight: 700; }
-.chart .lab { font-size: 12.5px; }
-.chart .val { font-family: var(--font-data); font-size: 13px; font-weight: 700; }
-.chart .track { fill: #eef2f7; }
-.chart .ours { fill: var(--fig-accent); }
-.chart .base { fill: var(--fig-muted); }
-
-/* 经历 */
-.path { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 36px 48px; }
-.tl { display: flex; flex-direction: column; gap: 20px; border-left: 1px solid var(--line); padding-left: 20px; margin-top: 20px; }
-.tl li { display: flex; flex-direction: column; gap: 2px; min-width: 0; position: relative; }
-.tl li::before { content: ""; position: absolute; left: -25px; top: 9px; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); }
-.tl .when { font-family: var(--font-data); font-size: 12.5px; color: var(--accent); letter-spacing: 0.04em; }
-.tl .who { font-weight: 700; }
-.tl .what { font-size: 15px; }
-.tl .desc { font-size: 14.5px; color: var(--muted); }
-
-/* 技能 */
-.skills { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px 24px; margin-top: 20px; }
-.skills dt { font-weight: 700; }
-.skills dd { display: flex; flex-wrap: wrap; gap: 6px; }
-.tag { background: var(--chip); border-radius: 6px; padding: 1px 10px; font-size: 14px; }
-
-.service { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
-.service li { padding-left: 14px; border-left: 2px solid var(--accent-soft); }
-
-.contact { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
-.contact h2 { font-size: 22px; }
-
-footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
-footer .wrap { padding-block: 20px; }
-
-@media (max-width: 900px) { .chain { grid-template-columns: 1fr; } .chain li, .chain li + li { padding: 10px 0 10px 16px; border-top: 0; border-left: 3px solid var(--accent-soft); } .chain li:first-child { border-left-color: var(--accent); } }
-@media (max-width: 760px) {
-  main { gap: 48px; padding-block: 32px 56px; }
-  .chain { grid-template-columns: 1fr; }
-  .chain li, .chain li + li { padding: 10px 0 10px 16px; border-top: 0; border-left: 3px solid var(--accent-soft); }
-  .chain li:first-child { border-left-color: var(--accent); }
-  .pub { grid-template-columns: 1fr; }
-  .facts li + li { border-left: 0; border-top: 1px solid var(--line); }
-  .skills { grid-template-columns: 1fr; gap: 4px 0; }
-  .skills dd { margin-bottom: 10px; }
-  h1 small { display: block; margin: 6px 0 0; }
+.pub-links a:hover { border-color: var(--accent); color: var(--accent); }
+.pub-note { font-size: .8125rem; margin-top: 16px; }
+.pub-toggle {
+  display: block; margin: 24px auto 0; padding: 8px 24px; font-size: .875rem; font-weight: 500;
+  color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 6px;
+  cursor: pointer; transition: all .2s ease;
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+.pub-toggle:hover { border-color: var(--accent); color: var(--accent); }
+html:not(.js) .pub-toggle { display: none; }
+html:not(.js) .pub.more[hidden] { display: block; }
+
+/* 看大图 */
+.lightbox {
+  position: fixed; inset: 0; z-index: 200; background: rgba(0, 0, 0, .8);
+  display: flex; align-items: center; justify-content: center; cursor: zoom-out;
+  opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease;
+}
+.lightbox.on { opacity: 1; visibility: visible; }
+.lightbox img { max-width: 92vw; max-height: 90vh; border-radius: 8px; background: #fff; box-shadow: 0 8px 32px rgba(0, 0, 0, .3); }
+
+/* 页脚 */
+.footer { padding: 48px 24px; text-align: center; border-top: 1px solid var(--line); margin-top: 40px; }
+.footer p { font-size: .8125rem; margin-bottom: 4px; }
+
+@media (max-width: 768px) {
+  section { padding: 28px 0; }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; margin-bottom: 32px; }
+  .nav-links { gap: 20px; }
+  .nav-links a { font-size: .8125rem; }
+  .hero { padding-top: calc(var(--navh) + 48px); padding-bottom: 48px; }
+  .hero-grid { flex-direction: column-reverse; text-align: center; gap: 32px; }
+  .hero-links { justify-content: center; }
+  .hero-photo img { width: 150px; height: 150px; }
+  .pub.feat { flex-direction: column; }
+  .pub-fig { width: 100%; }
+  .tl-logo { display: none; }
+  .tl-item { padding-bottom: 28px; }
+}
+@media (max-width: 480px) {
+  h1 { font-size: 1.75rem; }
+  .burger { display: flex; }
+  .nav-links {
+    display: none; position: absolute; top: var(--navh); left: 0; right: 0; flex-direction: column; gap: 0;
+    padding: 16px 0; background: rgba(255, 255, 255, .98); box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { width: 100%; padding: 12px 24px; text-align: center; font-size: .9375rem; }
+  .nav-links a:hover { background: var(--soft); }
+  .about p, .tl-list { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .js .tl-details, .chev, .lightbox { transition: none; }
+}
+@media print {
+  .nav, .pub-toggle, .lightbox { display: none; }
+  .hero { padding-top: 24px; }
+  .js .reveal { opacity: 1; transform: none; }
+  .js .tl-details { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+  .pub.more[hidden] { display: block; }
+}
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="#about">杜鑫淼<span>XINMIAO DU</span></a>
-    <nav class="nav" aria-label="页面导航">
-      <a href="#about">关于</a>
-      <a href="#pubs">论文</a>
-      <a href="#path">经历</a>
-      <a href="#skills">技能</a>
-      <a href="#contact">联系</a>
-    </nav>
+<nav class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="nav-name" data-en="Xinmiao Du" data-zh="杜鑫淼">Xinmiao Du</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#education" data-en="Education" data-zh="教育">Education</a>
+      <a href="#work" data-en="Work" data-zh="工作">Work</a>
+      <a href="#publications" data-en="Publications" data-zh="论文">Publications</a>
+    </div>
+    <div class="nav-actions">
+      <button class="lang" id="langBtn" type="button" aria-label="Switch language / 切换语言">EN</button>
+      <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <h1 data-en="Xinmiao Du" data-zh="杜鑫淼">Xinmiao Du</h1>
+      <p class="tagline" data-en="Embodied AI &amp; Robotic Manipulation Researcher" data-zh="具身智能与机器人操作研究者">Embodied AI &amp; Robotic Manipulation Researcher</p>
+      <div class="hero-links">
+        <a href="https://github.com/robotics-xbrain" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub: robotics-xbrain">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
+        </a>
+        <a href="mailto:duxm@stu.pku.edu.cn" aria-label="Email" title="duxm@stu.pku.edu.cn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+        </a>
+      </div>
+      <a href="cv.pdf" class="btn" target="_blank" rel="noopener" data-en="Download CV" data-zh="下载简历">Download CV</a>
+    </div>
+    <div class="hero-photo">
+      <img src="photo.jpg" alt="Xinmiao Du" width="200" height="200">
+    </div>
   </div>
 </header>
 
-<main class="wrap">
+<main>
 
-  <section class="hero" id="about">
-    <div class="hero-text">
-      <p class="eyebrow">Embodied AI · Robot Manipulation</p>
-      <h1>杜鑫淼<small>Xinmiao Du</small></h1>
-      <p class="role">具身智能｜机器人操作与感知算法</p>
-      <p class="affil">北京大学智能学院 · 计算机科学与技术博士研究生（2027 年 1 月毕业）· 导师：吴玺宏教授</p>
-      <p class="bio">我研究机械臂怎样看准、算准、放准：从单张 RGB 图像估计物体的 6D 位姿，按语言指令抓取物体，用神经网络求解逆运动学，再用视觉反馈把物体放到位。这些方法在 UR5 和 PiPER 真机上做过验证。读博前后有 4 年以上企业算法研发经历（含实习），带过 3–5 人的机械臂算法团队。</p>
-      <div class="link-row">
-        <span class="pill"><span class="k">邮箱</span><a class="v" id="email-text" href="mailto:duxm@stu.pku.edu.cn">duxm@stu.pku.edu.cn</a><button class="copy" type="button" data-target="email-text">复制</button></span>
-        <a class="pill" href="https://github.com/robotics-xbrain" target="_blank" rel="noopener"><span class="k">GitHub</span><span class="v">robotics-xbrain</span></a>
+<section id="about" class="reveal">
+  <div class="wrap">
+    <div class="about">
+      <p data-en="I am a Ph.D. candidate at the School of Intelligence Science and Technology, Peking University (advised by Prof. Xihong Wu). My research is on embodied intelligence, focusing on robot perception and manipulation: monocular 6D object pose estimation, language-guided grasping, inverse kinematics, and visual closed-loop control. I have published 8 papers, 7 of them as first author, in venues including Pattern Recognition, IROS, and EMNLP. I also have more than four years of industry R&amp;D experience (including internships), during which I led a robotic-arm algorithm team of 3–5 people."
+         data-zh="我是北京大学智能学院博士研究生（导师：吴玺宏教授），研究方向为具身智能，聚焦机器人感知与操作，包括单目 6D 位姿估计、语言引导抓取、逆运动学与视觉闭环控制。已发表论文 8 篇，其中第一作者 7 篇，发表于 Pattern Recognition、IROS、EMNLP 等。另有 4 年以上企业算法研发经历（含实习），带过 3–5 人的机械臂算法团队。">I am a Ph.D. candidate at the School of Intelligence Science and Technology, Peking University (advised by Prof. Xihong Wu). My research is on embodied intelligence, focusing on robot perception and manipulation: monocular 6D object pose estimation, language-guided grasping, inverse kinematics, and visual closed-loop control. I have published 8 papers, 7 of them as first author, in venues including Pattern Recognition, IROS, and EMNLP. I also have more than four years of industry R&amp;D experience (including internships), during which I led a robotic-arm algorithm team of 3–5 people.</p>
+    </div>
+  </div>
+</section>
+
+<section id="education" class="reveal">
+  <div class="wrap">
+    <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 9v6"/></svg><span data-en="Education" data-zh="教育经历">Education</span></h2>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-date" data-en="Sep 2020 — Jan 2027" data-zh="2020.09 — 2027.01">Sep 2020 — Jan 2027</div>
+        <div class="tl-head" role="button" tabindex="0" aria-expanded="false" aria-controls="d-phd">
+          <span class="tl-logo" data-logo="logo-pku.png"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></span>
+          <span class="tl-title">
+            <h3 data-en="Ph.D. in Computer Science and Technology" data-zh="计算机科学与技术博士">Ph.D. in Computer Science and Technology</h3>
+            <span class="tl-org" data-en="Peking University, School of Intelligence Science and Technology" data-zh="北京大学 智能学院">Peking University, School of Intelligence Science and Technology</span>
+          </span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,6 8,10 12,6"/></svg>
+        </div>
+        <div class="tl-details" id="d-phd"><div class="tl-inner">
+          <ul class="tl-list">
+            <li data-en="Research on monocular-vision-guided robotic manipulation, advised by Prof. Xihong Wu; published at Pattern Recognition, IROS, EMNLP, etc." data-zh="研究单目视觉引导的机械臂操作，导师为吴玺宏教授；成果发表于 Pattern Recognition、IROS、EMNLP 等。">Research on monocular-vision-guided robotic manipulation, advised by Prof. Xihong Wu; published at Pattern Recognition, IROS, EMNLP, etc.</li>
+            <li data-en="Reviewer for IEEE/RSJ IROS (2025, 2026), IEEE ICRA (2025), and AAAI (2026)." data-zh="IEEE/RSJ IROS（2025、2026）、IEEE ICRA（2025）、AAAI（2026）国际会议审稿人。">Reviewer for IEEE/RSJ IROS (2025, 2026), IEEE ICRA (2025), and AAAI (2026).</li>
+            <li data-en="Participant in Sub-project 3 of a National Key R&amp;D Program of China project (2023YFC3304800)." data-zh="国家重点研发计划（2023YFC3304800）课题三参研人员。">Participant in Sub-project 3 of a National Key R&amp;D Program of China project (2023YFC3304800).</li>
+            <li data-en="Helped mentor 10+ students in computer-vision research training." data-zh="参与指导 10 名以上学生开展计算机视觉方向的科研训练。">Helped mentor 10+ students in computer-vision research training.</li>
+          </ul>
+          <div class="tags"><span class="tag">Robotic Manipulation</span><span class="tag">6D Pose Estimation</span><span class="tag">Inverse Kinematics</span><span class="tag">PyTorch</span><span class="tag">MuJoCo</span></div>
+        </div></div>
       </div>
-    </div>
-    <figure class="portrait">
-      <img src="photo.jpg" alt="杜鑫淼的照片" width="720" height="720">
-    </figure>
-  </section>
 
-  <ul class="facts" aria-label="概况">
-    <li>
-      <span class="big"><span class="num">8</span> 篇论文</span>
-      <span class="small">其中第一作者 7 篇<br>一区 TOP 期刊、IROS、EMNLP 主会</span>
-    </li>
-    <li>
-      <span class="big"><span class="num">UR3 · UR5 · PiPER</span></span>
-      <span class="small">多款机械臂的算法开发与调试经验<br>从仿真训练到真机部署</span>
-    </li>
-    <li>
-      <span class="big"><span class="num">4</span> 年以上企业研发</span>
-      <span class="small">企业算法研发经历（含实习）<br>带过 3–5 人算法团队</span>
-    </li>
-  </ul>
-
-  <section id="pubs">
-    <div class="sec-head">
-      <h2>论文</h2>
-      <p>点击配图可查看大图</p>
-    </div>
-    <div class="pubs">
-
-      <article class="pub" id="w-grasp">
-        <a class="thumb" href="fig-mast3rgrasper.jpg" target="_blank" rel="noopener"><img src="fig-mast3rgrasper.jpg" alt="MASt3RGrasper 系统总览：文本指令和少量 RGB 图像经掩码跟踪、点云跟踪和对齐后，由 AnyGrasp 生成抓取位姿" width="1200" height="400" loading="lazy"></a>
-        <div class="pub-body">
-          <div class="badges"><span class="venue">IROS</span><span class="badge">机器人领域顶会</span><span class="badge role">第一作者</span></div>
-          <h3>MASt3RGrasper：用 2–3 张 RGB 图像完成语言引导抓取</h3>
-          <p class="en-title">MASt3RGrasper: A Real-Time Language-Guided Robotic Grasping Approach with Minimal RGB Images</p>
-          <p class="authors"><b>Xinmiao Du</b>, Zhuoyu Jiang, Xihong Wu*</p>
-          <p class="desc">不用深度相机，只拍 2–3 张 RGB 图像：以 MASt3R 的稠密对应逐帧融合点云，并用机械臂正运动学给出的相机位姿作约束，省去全局优化、恢复真实尺度；再由微调的 CLIP 选定目标、SAM2 跨视角跟踪，交给 AnyGrasp 生成六自由度抓取位姿。</p>
-          <p class="metrics"><span><b>90.4%</b>见过的物体抓取成功率</span><span><b>84.2%</b>未见过的物体</span><span><b>≈ 2.0 s</b>全流程耗时</span><span><b>156 次</b>UR5 真机抓取</span></p>
+      <div class="tl-item">
+        <div class="tl-date" data-en="Sep 2015 — Jun 2018" data-zh="2015.09 — 2018.06">Sep 2015 — Jun 2018</div>
+        <div class="tl-head" role="button" tabindex="0" aria-expanded="false" aria-controls="d-ms">
+          <span class="tl-logo" data-logo="logo-jlu.png"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></span>
+          <span class="tl-title">
+            <h3 data-en="M.S. in Operations Research and Cybernetics" data-zh="运筹学与控制论硕士">M.S. in Operations Research and Cybernetics</h3>
+            <span class="tl-org" data-en="Jilin University, School of Mathematics" data-zh="吉林大学 数学学院">Jilin University, School of Mathematics</span>
+          </span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,6 8,10 12,6"/></svg>
         </div>
-      </article>
-
-      <article class="pub" id="w-rgpose">
-        <a class="thumb" href="fig-rgpose.jpg" target="_blank" rel="noopener"><img src="fig-rgpose.jpg" alt="RGPose 方法总览：第一阶段有监督位姿学习，第二阶段对预测位姿加扰动并重新渲染，做一致性学习" width="1200" height="685" loading="lazy"></a>
-        <div class="pub-body">
-          <div class="badges"><span class="venue">Pattern Recognition</span><span class="badge">中科院一区 TOP / CCF-B</span><span class="badge role">第一作者兼通讯作者</span></div>
-          <h3>RGPose：重渲染引导的单目 6D 位姿估计</h3>
-          <p class="en-title">RGPose: Rendering-guided multimodal consistency learning for monocular 6D object pose estimation</p>
-          <p class="authors"><b>Xinmiao Du</b>*, Zhuoyu Jiang, Xihong Wu</p>
-          <p class="desc">常规训练只约束“这张图对应这个位姿”，遮挡严重时精度明显下降。RGPose 对预测位姿施加一个已知的刚体变换，用 CAD 模型重新渲染出配对图像，要求网络在位姿、特征和轮廓三个层面给出一致的预测。渲染只在训练时使用，推理仍是单张 RGB 图像、一次前向计算。</p>
-          <p class="metrics"><span><b>64.6% → 72.7%</b>遮挡数据集 LM-O，ADD(-S)</span><span><b>68.5%</b>新环境只用 10% 标注</span><span><b>31 ms</b>单帧推理</span></p>
-          <p class="links">
-            <a class="btn" href="https://doi.org/10.1016/j.patcog.2026.114666" target="_blank" rel="noopener">论文</a>
-            <a class="btn" href="https://github.com/robotics-xbrain/BlockManip" target="_blank" rel="noopener">数据集 BlockManip</a>
-            <a class="btn" href="https://doi.org/10.5281/zenodo.20389640" target="_blank" rel="noopener">Zenodo</a>
-          </p>
-        </div>
-      </article>
-
-      <article class="pub" id="w-ik">
-        <a class="thumb" href="fig-rhi-lr-ik.png" target="_blank" rel="noopener"><img src="fig-rhi-lr-ik.png" alt="RHI-LR-IK 两阶段逆运动学框架：RHI-IK 模型给出粗解，经正运动学计算误差后由 LR-IK 模型修正" width="1200" height="400" loading="lazy"></a>
-        <div class="pub-body">
-          <div class="badges"><span class="venue">IROS</span><span class="badge">机器人领域顶会</span><span class="badge role">第二作者</span></div>
-          <h3>RHI-LR-IK：两阶段神经网络逆运动学求解器</h3>
-          <p class="en-title">RHI-LR-IK: Fast High-Precision Two-Stage Neural Inverse Kinematics Solver</p>
-          <p class="authors">Zhuoyu Jiang, <b>Xinmiao Du</b>, Jiawei Du, Zhixin Yuan, Xihong Wu*</p>
-          <p class="desc">数值迭代法依赖初值，在奇异位形附近容易不收敛；已有的学习方法速度快但精度不足。这项工作第一阶段按运动链顺序逐个关节预测，给出粗解；第二阶段根据末端位姿误差做局部修正。部署时只微调修正网络的最后几层，并用经验回放保持全局精度。</p>
-          <p class="metrics"><span><b>0.44–0.63 cm</b>位置误差</span><span><b>0.62–0.72°</b>姿态误差</span><span><b>≈ 4.5 ms</b>单次求解，对比方法中最快</span><span><b>3 种</b>机械臂：UR3、PiPER、Franka</span></p>
-          <p class="links">
-            <a class="btn" href="https://github.com/jzy-doc/IKsolver-RHI-LR-IK" target="_blank" rel="noopener">代码</a>
-          </p>
-        </div>
-      </article>
-
-      <article class="pub" id="w-cliff">
-        <a class="thumb" href="fig-lexical-cliff.jpg" target="_blank" rel="noopener"><img src="fig-lexical-cliff.jpg" alt="被研究的模型结构：冻结的 CLIP 视觉与文本编码器之上接一个小型注意力网络，输出偏好分数" width="1200" height="371" loading="lazy"></a>
-        <div class="pub-body">
-          <div class="badges"><span class="venue">EMNLP 主会</span><span class="badge">NLP 顶会 / CCF-B</span><span class="badge role">第一作者</span></div>
-          <h3>Lexical Cliff：指令换一种说法，视觉语言模型就可能失效</h3>
-          <p class="en-title">When Paraphrases Break Binding: A Lexical Cliff in Small Heads over Frozen CLIP Text Embeddings</p>
-          <p class="authors"><b>Xinmiao Du</b>, Zhuoyu Jiang, Xihong Wu*</p>
-          <p class="desc">在冻结的 CLIP 文本编码器上接小网络来理解指令是常见做法，但常规测试沿用训练时的说法。我构建了测试用词与训练用词不重叠的评测集 CF-PrefBench v4，发现即使新说法和训练说法的文本相似度很高，准确率仍会骤降；替换实验表明问题出在文本编码器，而不是视觉端。</p>
-          <p class="metrics"><span><b>0.158 → 0.949</b>把文本嵌入换回训练说法后</span><span><b>7,749 组</b>评测视频对</span></p>
-          <p class="links">
-            <a class="btn" href="https://github.com/robotics-xbrain/cf-prefbench-v4" target="_blank" rel="noopener">评测集 CF-PrefBench v4</a>
-          </p>
-        </div>
-      </article>
-
-    </div>
-    <p class="pub-note">* 通讯作者</p>
-
-    <div class="more">
-      <h4>其他论文</h4>
-      <ul>
-        <li>
-          <span>TrajDiff: Diffusion-Based Trajectory Generation with 3D ESDF Scene Understanding</span>
-          <span class="v">ICIC Oral · 第一作者 · 以三维 ESDF 为条件的扩散模型直接生成机械臂轨迹，单次规划 0.22 s，比扩散基线 MPD 快约 10 倍</span>
-        </li>
-        <li>
-          <span>Two-stage Monocular 6D Pose Estimation for Small Cubic Objects</span>
-          <span class="v">ICIC · 第一作者 · 对称感知的 ROI 位姿回归加 MuJoCo 重渲染一致性训练，从单张 RGB 图估计小尺寸积木的 6D 位姿，仿真测试中旋转误差 6.83°（伪标签基线 14.61°）</span>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="path">
-    <div class="path">
-      <div>
-        <div class="sec-head"><h2>教育背景</h2></div>
-        <ol class="tl">
-          <li>
-            <span class="when">2020.09 — 2027.01</span>
-            <span class="who">北京大学 · 博士</span>
-            <span class="what">计算机科学与技术（智能科学与技术），智能学院</span>
-            <span class="desc">研究方向：单目视觉引导的机械臂操作；导师：吴玺宏教授</span>
-          </li>
-          <li>
-            <span class="when">2015.09 — 2018.06</span>
-            <span class="who">吉林大学 · 硕士</span>
-            <span class="what">运筹学与控制论，数学学院</span>
-          </li>
-          <li>
-            <span class="when">2011.09 — 2015.06</span>
-            <span class="who">吉林大学 · 学士</span>
-            <span class="what">统计学，数学学院</span>
-          </li>
-        </ol>
+        <div class="tl-details" id="d-ms"><div class="tl-inner">
+          <p data-en="Graduate studies in operations research and cybernetics." data-zh="运筹学与控制论方向研究生学习。">Graduate studies in operations research and cybernetics.</p>
+          <div class="tags"><span class="tag">Operations Research</span><span class="tag">Optimization</span></div>
+        </div></div>
       </div>
-      <div>
-        <div class="sec-head"><h2>工作经历</h2></div>
-        <ol class="tl">
-          <li>
-            <span class="when">2022.06 — 2024.09</span>
-            <span class="who">南京未来脑科技有限公司</span>
-            <span class="what">机械臂算法部经理（实习）</span>
-            <span class="desc">带领 3–5 人算法团队，负责机械臂视觉感知、运动规划、逆运动学与视觉伺服算法的研发，完成算法与机器人本体的系统集成和原型机验证。</span>
-          </li>
-          <li>
-            <span class="when">2019.01 — 2020.08</span>
-            <span class="who">北京灵伴即时智能科技有限公司</span>
-            <span class="what">视觉算法工程师</span>
-            <span class="desc">目标检测与识别、OCR、图像处理及深度学习模型研发。</span>
-          </li>
-          <li>
-            <span class="when">2016.09 — 2017.09</span>
-            <span class="who">北京灵伴即时智能科技有限公司</span>
-            <span class="what">视觉算法实习生</span>
-            <span class="desc">计算机视觉算法研究与工程实践。</span>
-          </li>
-        </ol>
+
+      <div class="tl-item">
+        <div class="tl-date" data-en="Sep 2011 — Jun 2015" data-zh="2011.09 — 2015.06">Sep 2011 — Jun 2015</div>
+        <div class="tl-head" role="button" tabindex="0" aria-expanded="false" aria-controls="d-bs">
+          <span class="tl-logo" data-logo="logo-jlu.png"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></span>
+          <span class="tl-title">
+            <h3 data-en="B.S. in Statistics" data-zh="统计学学士">B.S. in Statistics</h3>
+            <span class="tl-org" data-en="Jilin University, School of Mathematics" data-zh="吉林大学 数学学院">Jilin University, School of Mathematics</span>
+          </span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,6 8,10 12,6"/></svg>
+        </div>
+        <div class="tl-details" id="d-bs"><div class="tl-inner">
+          <p data-en="Undergraduate studies in statistics." data-zh="统计学本科学习。">Undergraduate studies in statistics.</p>
+          <div class="tags"><span class="tag">Probability</span><span class="tag">Statistics</span></div>
+        </div></div>
       </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="skills">
-    <div class="sec-head"><h2>专业技能</h2></div>
-    <dl class="skills">
-      <dt>感知与抓取</dt>
-      <dd><span class="tag">6D 位姿估计</span><span class="tag">少视角三维重建（MASt3R）</span><span class="tag">开放词汇定位与分割（CLIP、SAM2）</span><span class="tag">六自由度抓取（AnyGrasp）</span></dd>
-      <dt>运动与控制</dt>
-      <dd><span class="tag">正/逆运动学</span><span class="tag">运动规划（MoveIt）</span><span class="tag">视觉伺服</span><span class="tag">相机与手眼标定</span></dd>
-      <dt>策略学习</dt>
-      <dd><span class="tag">行为克隆</span><span class="tag">强化学习（SAC）</span><span class="tag">扩散模型轨迹生成</span><span class="tag">Sim-to-Real</span></dd>
-      <dt>仿真与工程</dt>
-      <dd><span class="tag">MuJoCo</span><span class="tag">PyBullet</span><span class="tag">Isaac Sim / Isaac Lab</span><span class="tag">ROS / ROS 2</span><span class="tag">Python</span><span class="tag">C++</span><span class="tag">PyTorch</span><span class="tag">TensorRT</span></dd>
-    </dl>
-  </section>
+<section id="work" class="reveal">
+  <div class="wrap">
+    <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><span data-en="Work Experience" data-zh="工作经历">Work Experience</span></h2>
+    <div class="timeline">
 
-  <section id="service">
-    <div class="sec-head"><h2>学术服务与项目</h2></div>
-    <ul class="service">
-      <li>IEEE/RSJ IROS（2025、2026）、IEEE ICRA（2025）、AAAI（2026）国际会议审稿人</li>
-      <li>国家重点研发计划（2023YFC3304800）课题三参研人员</li>
-      <li>参与指导 10 名以上学生开展计算机视觉方向的科研训练</li>
+      <div class="tl-item open">
+        <div class="tl-date" data-en="Jun 2022 — Sep 2024" data-zh="2022.06 — 2024.09">Jun 2022 — Sep 2024</div>
+        <div class="tl-head" role="button" tabindex="0" aria-expanded="true" aria-controls="d-nfb">
+          <span class="tl-logo" data-logo="logo-futurebrain.png"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V5l8-2v18"/><path d="M13 9l6 2v10"/><path d="M8 8h2M8 12h2M8 16h2"/></svg></span>
+          <span class="tl-title">
+            <h3 data-en="Robotic Arm Algorithm Team Manager (Intern)" data-zh="机械臂算法部经理（实习）">Robotic Arm Algorithm Team Manager (Intern)</h3>
+            <span class="tl-org" data-en="Nanjing Future Brain Technology Co., Ltd." data-zh="南京未来脑科技有限公司">Nanjing Future Brain Technology Co., Ltd.</span>
+          </span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,6 8,10 12,6"/></svg>
+        </div>
+        <div class="tl-details" id="d-nfb"><div class="tl-inner">
+          <ul class="tl-list">
+            <li data-en="Algorithms: Responsible for the R&amp;D of visual perception, motion planning, inverse kinematics, and visual servoing algorithms for robotic arms." data-zh="算法：负责机械臂视觉感知、运动规划、逆运动学与视觉伺服算法的研发。">Algorithms: Responsible for the R&amp;D of visual perception, motion planning, inverse kinematics, and visual servoing algorithms for robotic arms.</li>
+            <li data-en="System: Integrated the algorithms with the robot hardware and validated them on prototype machines." data-zh="系统：完成算法与机器人本体的系统集成和原型机验证。">System: Integrated the algorithms with the robot hardware and validated them on prototype machines.</li>
+            <li data-en="Team: Led an algorithm team of 3–5 people." data-zh="团队：带领 3–5 人算法团队。">Team: Led an algorithm team of 3–5 people.</li>
+          </ul>
+          <div class="tags"><span class="tag">Visual Perception</span><span class="tag">Motion Planning</span><span class="tag">Inverse Kinematics</span><span class="tag">Visual Servoing</span></div>
+        </div></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date" data-en="Jan 2019 — Aug 2020" data-zh="2019.01 — 2020.08">Jan 2019 — Aug 2020</div>
+        <div class="tl-head" role="button" tabindex="0" aria-expanded="false" aria-controls="d-lb">
+          <span class="tl-logo" data-logo="logo-lingban.png"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V5l8-2v18"/><path d="M13 9l6 2v10"/><path d="M8 8h2M8 12h2M8 16h2"/></svg></span>
+          <span class="tl-title">
+            <h3 data-en="Computer Vision Algorithm Engineer" data-zh="视觉算法工程师">Computer Vision Algorithm Engineer</h3>
+            <span class="tl-org" data-en="Lingban Instant Intelligence Technology, Beijing" data-zh="北京灵伴即时智能科技有限公司">Lingban Instant Intelligence Technology, Beijing</span>
+          </span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,6 8,10 12,6"/></svg>
+        </div>
+        <div class="tl-details" id="d-lb"><div class="tl-inner">
+          <p data-en="R&amp;D of object detection and recognition, OCR, image processing, and deep-learning models." data-zh="目标检测与识别、OCR、图像处理及深度学习模型研发。">R&amp;D of object detection and recognition, OCR, image processing, and deep-learning models.</p>
+          <div class="tags"><span class="tag">Object Detection</span><span class="tag">OCR</span><span class="tag">Deep Learning</span></div>
+        </div></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date" data-en="Sep 2016 — Sep 2017" data-zh="2016.09 — 2017.09">Sep 2016 — Sep 2017</div>
+        <div class="tl-head" role="button" tabindex="0" aria-expanded="false" aria-controls="d-lbi">
+          <span class="tl-logo" data-logo="logo-lingban.png"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V5l8-2v18"/><path d="M13 9l6 2v10"/><path d="M8 8h2M8 12h2M8 16h2"/></svg></span>
+          <span class="tl-title">
+            <h3 data-en="Computer Vision Algorithm Intern" data-zh="视觉算法实习生">Computer Vision Algorithm Intern</h3>
+            <span class="tl-org" data-en="Lingban Instant Intelligence Technology, Beijing" data-zh="北京灵伴即时智能科技有限公司">Lingban Instant Intelligence Technology, Beijing</span>
+          </span>
+          <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,6 8,10 12,6"/></svg>
+        </div>
+        <div class="tl-details" id="d-lbi"><div class="tl-inner">
+          <p data-en="Computer-vision algorithm research and engineering practice." data-zh="计算机视觉算法研究与工程实践。">Computer-vision algorithm research and engineering practice.</p>
+          <div class="tags"><span class="tag">Computer Vision</span></div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="publications" class="reveal">
+  <div class="wrap">
+    <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg><span data-en="Publications" data-zh="论文发表">Publications</span></h2>
+    <ul class="pubs" id="pubList">
+
+      <li class="pub feat">
+        <a class="pub-fig" href="fig-mast3rgrasper.jpg" target="_blank" rel="noopener"><img src="fig-mast3rgrasper.jpg" alt="MASt3RGrasper system overview" width="1200" height="400" loading="lazy"></a>
+        <div class="pub-info">
+          <p class="pub-title">MASt3RGrasper: A Real-Time Language-Guided Robotic Grasping Approach with Minimal RGB Images</p>
+          <p class="pub-authors"><strong>Xinmiao Du</strong>, Zhuoyu Jiang, Xihong Wu*</p>
+          <p class="pub-venue">IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</p>
+        </div>
+      </li>
+
+      <li class="pub feat">
+        <a class="pub-fig" href="fig-rgpose.jpg" target="_blank" rel="noopener"><img src="fig-rgpose.jpg" alt="RGPose method overview" width="1200" height="685" loading="lazy"></a>
+        <div class="pub-info">
+          <p class="pub-title">RGPose: Rendering-guided multimodal consistency learning for monocular 6D object pose estimation</p>
+          <p class="pub-authors"><strong>Xinmiao Du*</strong>, Zhuoyu Jiang, Xihong Wu</p>
+          <p class="pub-venue">Pattern Recognition <span class="badge" data-en="CAS Q1 Top · CCF-B" data-zh="中科院一区 TOP · CCF-B">CAS Q1 Top · CCF-B</span></p>
+          <div class="pub-links">
+            <a href="https://doi.org/10.1016/j.patcog.2026.114666" target="_blank" rel="noopener">DOI</a>
+            <a href="https://github.com/robotics-xbrain/BlockManip" target="_blank" rel="noopener">Dataset</a>
+            <a href="https://doi.org/10.5281/zenodo.20389640" target="_blank" rel="noopener">Zenodo</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="pub feat">
+        <a class="pub-fig" href="fig-rhi-lr-ik.png" target="_blank" rel="noopener"><img src="fig-rhi-lr-ik.png" alt="RHI-LR-IK two-stage framework" width="1200" height="400" loading="lazy"></a>
+        <div class="pub-info">
+          <p class="pub-title">RHI-LR-IK: Fast High-Precision Two-Stage Neural Inverse Kinematics Solver</p>
+          <p class="pub-authors">Zhuoyu Jiang, <strong>Xinmiao Du</strong>, Jiawei Du, Zhixin Yuan, Xihong Wu*</p>
+          <p class="pub-venue">IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</p>
+          <div class="pub-links">
+            <a href="https://github.com/jzy-doc/IKsolver-RHI-LR-IK" target="_blank" rel="noopener">Code</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="pub feat">
+        <a class="pub-fig" href="fig-lexical-cliff.jpg" target="_blank" rel="noopener"><img src="fig-lexical-cliff.jpg" alt="Model studied in the Lexical Cliff paper" width="1200" height="371" loading="lazy"></a>
+        <div class="pub-info">
+          <p class="pub-title">When Paraphrases Break Binding: A Lexical Cliff in Small Heads over Frozen CLIP Text Embeddings</p>
+          <p class="pub-authors"><strong>Xinmiao Du</strong>, Zhuoyu Jiang, Xihong Wu*</p>
+          <p class="pub-venue">Conference on Empirical Methods in Natural Language Processing (EMNLP) <span class="badge" data-en="Main Conference · CCF-B" data-zh="主会 · CCF-B">Main Conference · CCF-B</span></p>
+          <div class="pub-links">
+            <a href="https://github.com/robotics-xbrain/cf-prefbench-v4" target="_blank" rel="noopener">Dataset</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="pub more" hidden>
+        <p class="pub-title">TrajDiff: Diffusion-Based Trajectory Generation with 3D ESDF Scene Understanding</p>
+        <p class="pub-authors"><strong>Xinmiao Du</strong>, Zhuoyu Jiang, Xihong Wu*</p>
+        <p class="pub-venue">International Conference on Intelligent Computing (ICIC) <span class="badge">Oral</span></p>
+      </li>
+
+      <li class="pub more" hidden>
+        <p class="pub-title">Two-stage Monocular 6D Pose Estimation for Small Cubic Objects</p>
+        <p class="pub-authors"><strong>Xinmiao Du</strong>, Zhuoyu Jiang, Xihong Wu*</p>
+        <p class="pub-venue">International Conference on Intelligent Computing (ICIC)</p>
+      </li>
+
     </ul>
-  </section>
-
-  <section id="contact">
-    <div class="contact">
-      <h2>联系</h2>
-      <div class="link-row">
-        <span class="pill"><span class="k">邮箱</span><a class="v" id="email-text-2" href="mailto:duxm@stu.pku.edu.cn">duxm@stu.pku.edu.cn</a><button class="copy" type="button" data-target="email-text-2">复制</button></span>
-        <a class="pill" href="https://github.com/robotics-xbrain" target="_blank" rel="noopener"><span class="k">GitHub</span><span class="v">robotics-xbrain</span></a>
-      </div>
-    </div>
-  </section>
+    <p class="pub-note" data-en="* Corresponding author" data-zh="* 通讯作者">* Corresponding author</p>
+    <button class="pub-toggle" id="pubToggle" type="button" aria-expanded="false" data-en="Show More" data-zh="展开更多">Show More</button>
+  </div>
+</section>
 
 </main>
 
-<footer>
-  <div class="wrap">© 2026 杜鑫淼 Xinmiao Du</div>
+<footer class="footer">
+  <p data-en="Built with HTML, CSS &amp; JS" data-zh="使用 HTML、CSS 和 JS 构建">Built with HTML, CSS &amp; JS</p>
+  <p>&copy; 2026 Xinmiao Du</p>
 </footer>
 
 <script>
 (function () {
-  function selectText(el) {
-    var range = document.createRange();
-    range.selectNodeContents(el);
-    var sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+  var root = document.documentElement;
+  var $ = function (s, el) { return (el || document).querySelector(s); };
+  var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
+
+  /* ---------- 中英文切换 ---------- */
+  var KEY = 'site-lang';
+  var langBtn = $('#langBtn');
+  var TITLES = {
+    en: 'Xinmiao Du — Embodied AI & Robotic Manipulation',
+    zh: '杜鑫淼 — 具身智能与机器人操作'
+  };
+  function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function remember(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  function fromUrl() {
+    var m = /[?&]lang=(zh|en)\b/i.exec(location.search);
+    return m ? m[1].toLowerCase() : null;
   }
-  document.querySelectorAll('.copy').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var el = document.getElementById(btn.dataset.target);
-      var text = el.textContent.trim();
-      var done = function () {
-        btn.textContent = '已复制';
-        setTimeout(function () { btn.textContent = '复制'; }, 1600);
-      };
-      var fallback = function () {
-        selectText(el);
-        btn.textContent = '已选中';
-        setTimeout(function () { btn.textContent = '复制'; }, 2200);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done).catch(fallback);
-      } else {
-        fallback();
+  var lang = fromUrl() || stored() || 'en';
+  if (lang !== 'zh') lang = 'en';
+
+  function applyLang() {
+    root.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    $$('[data-en]').forEach(function (el) {
+      var t = el.getAttribute('data-' + lang);
+      if (t !== null) el.textContent = t;
+    });
+    langBtn.textContent = lang === 'zh' ? '中' : 'EN';
+    document.title = TITLES[lang];
+  }
+  langBtn.addEventListener('click', function () {
+    lang = lang === 'en' ? 'zh' : 'en';
+    remember(lang);
+    applyLang();
+  });
+  applyLang();
+
+  /* ---------- 导航阴影 ---------- */
+  var nav = $('#nav');
+  function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 10); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- 滚动淡入 ---------- */
+  var reveals = $$('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('shown'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+    reveals.forEach(function (s) { io.observe(s); });
+  } else {
+    reveals.forEach(function (s) { s.classList.add('shown'); });
+  }
+
+  /* ---------- 时间线展开/收起（同一时间只展开一条） ---------- */
+  var heads = $$('.tl-head');
+  heads.forEach(function (head) {
+    head.addEventListener('click', function () {
+      var item = head.parentNode;
+      var wasOpen = item.classList.contains('open');
+      $$('.tl-item.open').forEach(function (o) {
+        o.classList.remove('open');
+        $('.tl-head', o).setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        item.classList.add('open');
+        head.setAttribute('aria-expanded', 'true');
       }
     });
+    head.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); head.click(); }
+    });
+  });
+
+  /* ---------- 校徽 / 公司 logo：仓库里有对应图片就显示，没有就用默认图标 ---------- */
+  var LOGOS = [];  /* 例如 ['logo-pku.png', 'logo-jlu.png']，文件传到仓库后把文件名写进来 */
+  $$('.tl-logo[data-logo]').forEach(function (tile) {
+    var name = tile.getAttribute('data-logo');
+    if (LOGOS.indexOf(name) === -1) return;
+    var img = new Image();
+    img.alt = '';
+    img.onload = function () { tile.textContent = ''; tile.appendChild(img); tile.style.background = '#fff'; };
+    img.src = name;
+  });
+
+  /* ---------- 其余论文 ---------- */
+  var pubToggle = $('#pubToggle');
+  var more = $$('.pub.more');
+  function markLast() {
+    $$('.pub').forEach(function (p) { p.classList.remove('last'); });
+    var visible = $$('.pub').filter(function (p) { return !p.hidden; });
+    if (visible.length) visible[visible.length - 1].classList.add('last');
+  }
+  pubToggle.addEventListener('click', function () {
+    var open = pubToggle.getAttribute('aria-expanded') === 'true';
+    more.forEach(function (li) { li.hidden = open; });
+    pubToggle.setAttribute('aria-expanded', String(!open));
+    pubToggle.setAttribute('data-en', open ? 'Show More' : 'Show Less');
+    pubToggle.setAttribute('data-zh', open ? '展开更多' : '收起');
+    pubToggle.textContent = pubToggle.getAttribute('data-' + lang);
+    markLast();
+  });
+  markLast();
+
+  /* ---------- 点击配图看大图 ---------- */
+  var box = document.createElement('div');
+  box.className = 'lightbox';
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-hidden', 'true');
+  var big = document.createElement('img');
+  big.alt = '';
+  box.appendChild(big);
+  document.body.appendChild(box);
+  function closeBox() { box.classList.remove('on'); box.setAttribute('aria-hidden', 'true'); }
+  $$('.pub-fig').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      big.src = a.getAttribute('href');
+      big.alt = $('img', a).alt;
+      box.classList.add('on');
+      box.setAttribute('aria-hidden', 'false');
+    });
+  });
+  box.addEventListener('click', closeBox);
+
+  /* ---------- 手机端菜单 ---------- */
+  var burger = $('#burger');
+  var links = $('#navLinks');
+  function closeMenu() {
+    links.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  }
+  burger.addEventListener('click', function () {
+    var open = links.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(open));
+  });
+  $$('a', links).forEach(function (a) { a.addEventListener('click', closeMenu); });
+  document.addEventListener('click', function (e) {
+    if (!links.contains(e.target) && !burger.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeMenu(); closeBox(); }
   });
 })();
 </script>
